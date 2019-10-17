@@ -1,0 +1,78 @@
+version: '3'
+
+services:
+  gitea:
+    image: gitea/gitea:1
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - RUN_MODE=prod
+    ports:
+      - 3000:3000
+    volumes:
+      - /volume1/docker/gitea:/data
+    restart: always
+
+  drone-server:
+    container_name: drone_server
+    image: drone/drone:1
+    ports:
+          - 3001:80
+    volumes:
+          - /volume1/docker/drone:/var/lib/drone/
+          - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    environment:
+          # TODO: Login to gitea and register an oauth application
+          # name: drone
+          # redirect-uri: http://<IP-OF-THE-NAS>:3001/login
+          # you will get a client id to be placed here:
+          - DRONE_GITEA_CLIENT_ID=<TODO CLIENT_ID>
+          # and a secret to be placed here:
+          - DRONE_GITEA_CLIENT_SECRET=<TODO CLIENT_SECRET>
+          
+          # TODO: <IP-OF-THE-NAS>
+          - DRONE_GITEA_SERVER=http://<TODO IP-OF-THE-NAS>:3000
+          - DRONE_GIT_ALWAYS_AUTH=false
+          - DRONE_AGENTS_ENABLED=false
+
+          # TODO: insert random secret string here
+          - DRONE_RPC_SECRET=<TODO RANDOM-SECRET-API-STRING>
+          
+          # TODO: <IP-OF-THE-NAS>
+          - DRONE_SERVER_HOST=<TODO IP-OF-THE-NAS>:3001
+          - DRONE_SERVER_PROTO=http
+
+          # TODO: <GITEA-ADMIN-USER>
+          - DRONE_USER_CREATE=username:<TODO GITEA-ADMIN-USER>,admin:true
+          - DRONE_LOGS_DEBUG=true
+          - DRONE_LOGS_TRACE=true
+          - DRONE_LOGS_PRETTY=true
+          - DRONE_LOGS_COLOR=true
+          - DRONE_DATABASE_DRIVER=sqlite3
+          - DRONE_DATABASE_DATASOURCE=/var/lib/drone/drone.sqlite
+          - DRONE_RUNNER_CAPACITY=1
+          - DRONE_TLS_AUTOCERT=false
+    depends_on:
+      - gitea
+  drone-agent:
+    container_name: drone_agent
+    image: drone/agent:1
+    ports:
+          - 3002:3000
+    volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    environment:
+          # TODO: <IP-OF-THE-NAS>
+          - DRONE_RPC_HOST=<TODO IP-OF-THE-NAS>:3001
+          # TODO: insert random secret string here (same as in drone-server)
+          - DRONE_RPC_SECRET=<TODO RANDOM-SECRET-API-STRING>
+          - DRONE_RUNNER_CAPACITY=1
+          - DRONE_RUNNER_NAME=runnerone
+          - DRONE_LOGS_TRACE=true
+          - DRONE_LOGS_PRETTY=true
+          - DRONE_LOGS_COLOR=true
+    depends_on:
+      - drone-server
