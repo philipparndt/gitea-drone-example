@@ -1,4 +1,4 @@
-# Gitea with Drone.io Example
+# Gitea with Drone.io example
 
 This is a working example of gitea with drone on a Synology NAS.
 
