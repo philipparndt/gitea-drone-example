@@ -4,7 +4,7 @@ This is a working example of gitea with drone on a Synology NAS.
 
 ### Tested versions:
 
-- gitea/gitea version: 1.9.4 
+- gitea/gitea version: 1.9.5 
 - drone/drone version: 1.6.0
 - drone/agent version: 1.6.0 
 
@@ -12,6 +12,10 @@ This is a working example of gitea with drone on a Synology NAS.
 
 - `/volume1/docker/gitea`
 - `/volume1/docker/drone`
+
+### http or https
+
+you can find two examples for both in the subfolders `http` and `https`
 
 ### Installation process
 
