@@ -4,9 +4,9 @@ This is a working example of gitea with drone on a Synology NAS.
 
 ### Tested versions:
 
-- gitea/gitea version: 1.9.5 
-- drone/drone version: 1.6.0
-- drone/agent version: 1.6.0 
+- gitea/gitea version: 1.11.4 
+- drone/drone version: 1.7.0
+- drone/agent version: 1.6.2 
 
 ### Folders on NAS:
 
