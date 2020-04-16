@@ -2,7 +2,7 @@ version: '3'
 
 services:
   gitea:
-    image: gitea/gitea:1
+    image: gitea/gitea:1.11.4
     container_name: gitea
     environment:
       - USER_UID=1000
@@ -17,7 +17,7 @@ services:
 
   drone-server:
     container_name: drone_server
-    image: drone/drone:1
+    image: drone/drone:1.7.0
     ports:
       - 3001:80
       - 3002:443
@@ -63,7 +63,7 @@ services:
       - gitea
   drone-agent:
     container_name: drone_agent
-    image: drone/agent:1
+    image: drone/agent:1.6.2
     ports:
       - 3003:3000
     volumes:
